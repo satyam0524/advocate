@@ -246,8 +246,9 @@ customer[8] = "Business Loan";
 customer[8] = "vehicle RegNo. "+customer[8];
  }
 
-
-
+customer[9]=(customer[9].replace(/[&\/\\#, +()$~%.'":*?<>{}]/g, '_'));
+      
+customer[11]=(customer[11].replace(/[&\/\\#, +()$~%.'":*?<>{}]/g, '_'));
 customer[26] = new Intl.NumberFormat("en-IN").format(customer[26]);
 
 customer[35] = new Intl.NumberFormat("en-IN").format(customer[35]);
