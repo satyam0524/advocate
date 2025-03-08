@@ -232,30 +232,9 @@ alert("copied");
 
          $("#wdiv").show();
 
-
-const viewportWidth = $(window).width();
-      const viewportHeight = $(window).height();
-
-      // Factor in the zoom level
-      const zoomFactor = window.devicePixelRatio || 1;
-
-      // Adjust width and height based on zoom
-      const adjustedWidth = viewportWidth * zoomFactor;
-      const adjustedHeight = viewportHeight * zoomFactor;
-
-      // Apply the adjusted size to the div
-      $('#wdiv').css({
-        'width': adjustedWidth + 'px',
-        'height': adjustedHeight + 'px'
-      });
-
-
-
-
-
-
-
-      
+var Gname;
+      Gname = customer[11];
+     
 
 
             var whatsup = "customer Name:"+customer[9]+"\n *Guarantor Name*: "+customer[11]+" Loan Amount Sanctioned:"+customer[26]+" Total Childloan Amount: "+customer[27]+" Total Expences:"+customer[28]+" Total Receipt(-) :"+customer[29]+" Principal Loss:"+customer[4]+" Number of Child Loans:"+customer[30]+" Vehicle Decription:"+customer[33]+" Year:"+customer[34]+" Ni act No.:"+customer[13]+", EP No."+customer[16]+" ,Award No. "+customer[19]+", Sec17 No. "+customer[22]+" filed against : "+customer[23]+"Property Details: "+customer[25];
@@ -325,7 +304,7 @@ if(customer[19]=="NO")
                         customer[4] = "<b id=ploss>"+customer[4]+"</b>";
                        }
 
-                      var loand="<b>Loan Details</b> : </br> customer Name:"+customer[9]+"</br> Guarantor Name: "+customer[11]+"</br> Loan Amount Sanctioned:"+customer[26]+"</br> Total Childloan Amount: "+customer[27]+"</br> Total Expences:"+customer[28]+"</br> Total Receipt(-) :"+customer[29]+"</br> Principal Loss:<b>"+customer[4]+"</b></br> Number of Child Loans:"+customer[30]+"</br> Vehicle Decription:"+customer[33]+" Year:"+customer[34]+"</br> </br> Ni act No.:"+customer[13]+", EP No."+customer[16]+"</br> Award No. "+customer[19]+", Sec17 No. "+customer[22]+" filed against : "+customer[23]+"</br> Property Details: "+customer[25];
+                      var loand="<b>Loan Details</b> : </br> customer Name:"+customer[9]+"</br> Guarantor Name: "+Gname+"</br> Loan Amount Sanctioned:"+customer[26]+"</br> Total Childloan Amount: "+customer[27]+"</br> Total Expences:"+customer[28]+"</br> Total Receipt(-) :"+customer[29]+"</br> Principal Loss:<b>"+customer[4]+"</b></br> Number of Child Loans:"+customer[30]+"</br> Vehicle Decription:"+customer[33]+" Year:"+customer[34]+"</br> </br> Ni act No.:"+customer[13]+", EP No."+customer[16]+"</br> Award No. "+customer[19]+", Sec17 No. "+customer[22]+" filed against : "+customer[23]+"</br> Property Details: "+customer[25];
      
                        $("#divdata").html(bshare+gshare+loand);
                        
