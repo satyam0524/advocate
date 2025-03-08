@@ -234,7 +234,10 @@ alert("copied");
 
          $("#wdiv").show();
 
-
+$('#wdiv').css({
+        'width': $(window).width() + 'px',  // Set width to viewport width
+        'height': $(window).height() + 'px'  // Set height to viewport height
+      });
 
             var whatsup = "customer Name:"+customer[9]+"\n *Guarantor Name*: "+customer[11]+" Loan Amount Sanctioned:"+customer[26]+" Total Childloan Amount: "+customer[27]+" Total Expences:"+customer[28]+" Total Receipt(-) :"+customer[29]+" Principal Loss:"+customer[4]+" Number of Child Loans:"+customer[30]+" Vehicle Decription:"+customer[33]+" Year:"+customer[34]+" Ni act No.:"+customer[13]+", EP No."+customer[16]+" ,Award No. "+customer[19]+", Sec17 No. "+customer[22]+" filed against : "+customer[23]+"Property Details: "+customer[25];
              var bmobile=customer[10];
