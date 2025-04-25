@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>d</title>
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/linways/table-to-excel@v1.0.4/dist/tableToExcel.js"></script>
+<script>
+var html = "not data";
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  function handleFileSelect() {
+  const input = document.getElementById('file-input');
+  const file = input.files[0];
+  const reader = new FileReader();
+  var contents =[];
+  var my = []
+  reader.onload = function() {
+    
+    contents = reader.result;
+    my = contents;
+    //console.log(contents);
+    // Process the contents of the file
+  
+
+
+            
+                
+
+
+
+           var i;
+
+  my = my.replace("[\"","");  // remove ["
+  my = my.replace("\"]","");  // remove ["
+
+
+
+
+  //my = my.replace(/\\/g, "");
+     my = my.split("\",\"");    
+      
+      
+
+console.log(my.length);
+
+
+
+       //var my = JSON.stringify(my);
+
+        //var my = JSON.parse(my);
+
+      var html = `<table>
+  <tr>
+    <th>cino</th>
+    <th>type_name</th>
+    <th>case_no</th>
+    <th>reg_year</th>
+    <th>reg_no</th>
+    <th>petparty_name</th>
+    <th>resparty_name</th>
+    <th>fil_year</th>
+    <th>establishment_name</th>
+    <th>date_next_list</th>
+    <th>date_last_list</th>
+   <th>difference</th>
+    <th>court_no_desg_name</th>
+    <th>note</th>
+    <th>disp_name</th>
+    <th>purpose_name</th>
+  </tr>`;
+//console.log(my.length);
+
+
+for(i = 0;i<my.length;i++)
+{
+
+  my[i] = my[i].replace(/\\/g, "");
+  var s = JSON.parse(my[i]);
+
+var d1=new Date(s.date_next_list);   
+var d2=new Date(s.date_last_list); 
+
+var diff = d1.getTime() - d2.getTime(); 
+
+var difff = diff / (1000 * 60 * 60 * 24); 
+
+
+  
+html = html + `<tr>
+    <td>`+s.cino+`</td>
+    <td>`+s.type_name+`</td>
+    <td>`+s.case_no+`</td>
+    <td>`+s.reg_year+`</td>
+    <td>`+s.reg_no+`</td>
+    <td>`+s.petparty_name+`</td>
+    <td>`+s.resparty_name+`</td>
+    <td>`+s.fil_year+`</td>
+    <td>`+s.establishment_name+`</td>
+    <td>`+s.date_next_list+`</td>
+   <td>`+s.date_last_list+`</td>
+    <td>`+difff+`</td>
+    <td>`+s.court_no_desg_name+`</td>
+    <td>`+s.note+`</td>
+    <td>`+s.disp_name+`</td>
+    <td>`+s.purpose_name+`</td></tr>`;
+
+
+}
+html = html + `</table>`;
+console.log(html); 
+document.getElementById("demo").innerHTML = html;
+
+
+
+
+};
+  reader.readAsText(file);
+}
+ 
+
+
+$(document).ready(function () {
+        $("#btnExport").click(function () {
+            let table = document.getElementsByTagName("table");
+            console.log(table);
+            
+            const now = new Date();
+
+// Get the current date as a string
+const today = now.toDateString();
+            var filename="ecourt Excel "+today+".xlsx";
+            TableToExcel.convert(table[0], {
+                name: filename,
+                sheet: {
+                    name: 'EcourtInExcel'
+                }
+            });
+        });
+    });
+   
+
+
+
+
+
+
+</script>
+
+
+</head>
+<body>
+  <input type="file" id="file-input" onchange="handleFileSelect()">
+  <input type="button" id="btnExport" value="Export to Excel">
+<div id="demo"></div>
+<script>
+//document.getElementById("demo").innerHTML = html;
+ 
+</script>
+</body>
+</html>
