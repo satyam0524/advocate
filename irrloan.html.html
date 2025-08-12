@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Loan IRR Calculator</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 30px; }
+        textarea { width: 100%; height: 120px; margin-bottom: 10px; }
+        button { padding: 10px 20px; }
+        .result { margin-top: 15px; font-size: 1.2em; font-weight: bold; }
+    </style>
+</head>
+<body>
+<p><span style="background-color: #ff9900;">Design by Satyam Advocate</span></p>
+<h2>Loan IRR Calculator</h2>
+
+<p>Paste Dates (one per line, format: DD-MM-YYYY):</p>
+<textarea id="dates"></textarea>
+
+<p>Paste Amounts (one per line, match dates order, negative for loan sanction, positive for receipt):</p>
+<textarea id="amounts"></textarea>
+
+<button onclick="calculateIRR()">Calculate IRR</button>
+
+<div class="result" id="result"></div>
+
+<script>
+function parseDateDDMMYYYY(dateStr) {
+    const [day, month, year] = dateStr.split("-").map(Number);
+    return new Date(year, month - 1, day);
+}
+
+function XIRR(values, dates, guess = 0.1) {
+    const maxIterations = 100;
+    const tolerance = 1e-7;
+
+    function xnpv(rate) {
+        let xnpvValue = 0;
+        const t0 = dates[0].getTime();
+        for (let i = 0; i < values.length; i++) {
+            const t = dates[i].getTime();
+            const diff = (t - t0) / (1000 * 60 * 60 * 24 * 365);
+            xnpvValue += values[i] / Math.pow(1 + rate, diff);
+        }
+        return xnpvValue;
+    }
+
+    function xnpvDerivative(rate) {
+        let result = 0;
+        const t0 = dates[0].getTime();
+        for (let i = 0; i < values.length; i++) {
+            const t = dates[i].getTime();
+            const diff = (t - t0) / (1000 * 60 * 60 * 24 * 365);
+            result += (-diff * values[i]) / Math.pow(1 + rate, diff + 1);
+        }
+        return result;
+    }
+
+    let rate = guess;
+    for (let i = 0; i < maxIterations; i++) {
+        const npv = xnpv(rate);
+        const deriv = xnpvDerivative(rate);
+        const newRate = rate - npv / deriv;
+        if (Math.abs(newRate - rate) <= tolerance) return rate;
+        rate = newRate;
+    }
+    return rate;
+}
+
+function calculateIRR() {
+    const dateLines = document.getElementById("dates").value.trim().split(/\r?\n/);
+    const amountLines = document.getElementById("amounts").value.trim().split(/\r?\n/);
+
+    if (dateLines.length !== amountLines.length) {
+        alert("Dates and amounts count must match!");
+        return;
+    }
+
+    const dates = dateLines.map(d => parseDateDDMMYYYY(d.trim()));
+    const amounts = amountLines.map(a => parseFloat(a.trim()));
+
+    if (amounts.some(isNaN) || dates.some(d => isNaN(d.getTime()))) {
+        alert("Invalid date or amount detected!");
+        return;
+    }
+
+    const irr = XIRR(amounts, dates) * 100;
+    document.getElementById("result").innerHTML = "Total IRR till date: " + irr.toFixed(4) + " %";
+}
+</script>
+</body>
+</html>
