@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>eCourt Case List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        h2 {
+            margin-bottom: 10px;
+        }
+        button, input[type="text"] {
+            margin-bottom: 15px;
+            padding: 8px;
+            font-size: 14px;
+        }
+        button {
+            margin-right: 10px;
+            cursor: pointer;
+        }
+        .case-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .case-item {
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            background-color: #fff;
+            transition: background 0.3s;
+        }
+        .case-item:hover {
+            background-color: #e6f2ff;
+        }
+        .case-main {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 12px;
+            font-size: 14px;
+            font-weight: bold;
+            position: sticky;
+            top: 0;
+            background: #f9f9f9;
+            border-bottom: 1px solid #ccc;
+            cursor: pointer;
+        }
+        .case-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 8px 12px;
+            font-size: 14px;
+        }
+        .case-field {
+            flex: 1 1 200px;
+        }
+        .case-label {
+            font-weight: bold;
+        }
+        .case-details {
+            display: none;
+            border-top: 1px dashed #aaa;
+            padding-top: 8px;
+            background-color: #fafafa;
+        }
+    </style>
+</head>
+<body>
+
+<h2>eCourt Case List</h2>
+<input type="text" id="searchBox" placeholder="Search any field...">
+<button id="expandAll">Expand All</button>
+<button id="collapseAll">Collapse All</button>
+
+<div class="case-list" id="caseList">
+    Loading cases...
+</div>
+
+<script>
+const FILE_ID = "1Ev4lWT_s7LzaeyremKpr4joZSRaygRA7"; // Replace with your Google Drive file ID
+const URL = `https://drive.google.com/uc?export=download&id=${FILE_ID}`;
+
+let cases = [];
+
+function renderCases(data) {
+    const caseListDiv = document.getElementById("caseList");
+    caseListDiv.innerHTML = "";
+
+    if (data.length === 0) {
+        caseListDiv.innerHTML = "<p>No cases found.</p>";
+        return;
+    }
+
+    data.forEach(c => {
+        const caseDiv = document.createElement("div");
+        caseDiv.className = "case-item";
+
+        caseDiv.innerHTML = `
+            <div class="case-main">
+                <div class="case-field"><span class="case-label">CINO:</span> ${c.cino}</div>
+                <div class="case-field"><span class="case-label">Type:</span> ${c.type_name}</div>
+                <div class="case-field"><span class="case-label">Case No:</span> ${c.case_no}</div>
+                <div class="case-field"><span class="case-label">Petitioner:</span> ${c.petparty_name}</div>
+                <div class="case-field"><span class="case-label">Respondent:</span> ${c.resparty_name}</div>
+                <div class="case-field"><span class="case-label">Next List Date:</span> ${c.date_next_list}</div>
+                <div class="case-field"><span class="case-label">Last List Date:</span> ${c.date_last_list}</div>
+            </div>
+            <div class="case-details">
+                <div class="case-row"><span class="case-label">Difference:</span> ${c.difference || ''}</div>
+                <div class="case-row"><span class="case-label">Court & Designation:</span> ${c.court_no_desg_name}</div>
+                <div class="case-row"><span class="case-label">Purpose:</span> ${c.purpose_name}</div>
+                <div class="case-row"><span class="case-label">Note:</span> ${c.note || ''}</div>
+                <div class="case-row"><span class="case-label">Establishment:</span> ${c.establishment_name || ''}</div>
+                <div class="case-row"><span class="case-label">Reg Year:</span> ${c.reg_year || ''}</div>
+                <div class="case-row"><span class="case-label">Reg No:</span> ${c.reg_no || ''}</div>
+                <div class="case-row"><span class="case-label">Fil Year:</span> ${c.fil_year || ''}</div>
+            </div>
+        `;
+
+        // Toggle details on main click
+        const mainDiv = caseDiv.querySelector(".case-main");
+        const detailsDiv = caseDiv.querySelector(".case-details");
+        mainDiv.addEventListener("click", () => {
+            detailsDiv.style.display = detailsDiv.style.display === "none" ? "block" : "none";
+        });
+
+        caseListDiv.appendChild(caseDiv);
+    });
+}
+
+// Fetch JSON from Google Drive
+fetch(URL)
+    .then(response => {
+        if (!response.ok) throw new Error("Failed to fetch file");
+        return response.text();
+    })
+    .then(data => {
+        const jsonArray = JSON.parse(data);
+        cases = jsonArray.map(str => JSON.parse(str));
+        renderCases(cases);
+    })
+    .catch(err => {
+        console.error(err);
+        document.getElementById("caseList").innerHTML = "<p>Error loading cases.</p>";
+    });
+
+// Search functionality
+document.getElementById("searchBox").addEventListener("input", function() {
+    const query = this.value.toLowerCase();
+    const filtered = cases.filter(c => 
+        Object.values(c).some(val => (val + "").toLowerCase().includes(query))
+    );
+    renderCases(filtered);
+});
+
+// Expand / Collapse all buttons
+document.getElementById("expandAll").addEventListener("click", () => {
+    document.querySelectorAll(".case-details").forEach(d => d.style.display = "block");
+});
+document.getElementById("collapseAll").addEventListener("click", () => {
+    document.querySelectorAll(".case-details").forEach(d => d.style.display = "none");
+});
+</script>
+
+</body>
+</html>
