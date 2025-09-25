@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>eCourt Case List</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      padding: 20px;
+    }
+    h2 { margin-bottom: 10px; }
+    input[type="file"], input[type="text"] {
+      margin-bottom: 15px;
+      padding: 8px;
+      font-size: 14px;
+    }
+    .case-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .case-card {
+      display: flex;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      overflow: hidden;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    /* alternating background colors */
+    .case-card:nth-child(3n+1) { background: #fffacd; } /* light yellow */
+    .case-card:nth-child(3n+2) { background: #e0f2ff; } /* light blue */
+    .case-card:nth-child(3n+3) { background: #ffe0e0; } /* light pink */
+
+    /* date section */
+    .case-date {
+      width: 90px;
+      background: #00a2e8;
+      color: white;
+      text-align: center;
+      padding: 10px 5px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      font-weight: bold;
+    }
+    .case-date span { display: block; line-height: 1.2; }
+    .case-date .month { font-size: 14px; }
+    .case-date .day { font-size: 24px; }
+    .case-date .year { font-size: 12px; }
+    .case-date .status {
+      background: #2ecc71;
+      color: white;
+      font-size: 11px;
+      padding: 2px 6px;
+      margin-top: 4px;
+      border-radius: 4px;
+    }
+
+    /* middle content */
+    .case-content {
+      flex: 2;
+      padding: 10px;
+      font-size: 14px;
+    }
+    .case-content a {
+      font-weight: bold;
+      color: #0073e6;
+      text-decoration: none;
+    }
+    .case-content a:hover { text-decoration: underline; }
+    .case-content .court { margin: 5px 0; }
+    .case-content .badge {
+      display: inline-block;
+      margin-top: 5px;
+      padding: 2px 6px;
+      font-size: 12px;
+      background: white;
+      border: 1px solid #999;
+      border-radius: 4px;
+    }
+
+    /* right side party names */
+    .case-party {
+      flex: 1;
+      padding: 10px;
+      font-weight: bold;
+      font-size: 14px;
+      border-left: 1px solid #ccc;
+      display: flex;
+      align-items: center;
+    }
+  </style>
+</head>
+<body>
+
+<h2>eCourt Case List</h2>
+<input type="file" id="fileInput" accept=".txt"><br>
+<input type="text" id="searchBox" placeholder="Search cases...">
+
+<div class="case-list" id="caseList">
+  Upload a .txt file to load cases.
+</div>
+
+<script>
+let cases = [];
+
+// Handle file upload
+document.getElementById("fileInput").addEventListener("change", function(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = function(evt) {
+    try {
+      const data = evt.target.result;
+      const jsonArray = JSON.parse(data);
+      cases = jsonArray.map(str => JSON.parse(str));
+      renderCases(cases);
+    } catch (err) {
+      console.error(err);
+      document.getElementById("caseList").innerHTML = "<p>Error parsing file. Make sure it's JSON format.</p>";
+    }
+  };
+  reader.readAsText(file);
+});
+
+// Render cases
+function renderCases(data) {
+  const caseListDiv = document.getElementById("caseList");
+  caseListDiv.innerHTML = "";
+
+  if (data.length === 0) {
+    caseListDiv.innerHTML = "<p>No cases found.</p>";
+    return;
+  }
+
+  data.forEach((c, i) => {
+    // Extract date parts
+    let nextDate = c.date_next_list || "";
+    let month = "", day = "", year = "";
+    if (nextDate && nextDate.includes("-")) {
+      const d = new Date(nextDate);
+      const months = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
+      month = months[d.getMonth()];
+      day = d.getDate();
+      year = d.getFullYear();
+    }
+
+    const caseDiv = document.createElement("div");
+    caseDiv.className = "case-card";
+
+    caseDiv.innerHTML = `
+      <div class="case-date">
+        <span class="month">${month}</span>
+        <span class="day">${day}</span>
+        <span class="year">${year}</span>
+        <span class="status">Pending</span>
+      </div>
+      <div class="case-content">
+        <a href="#">${i+1}) ${c.type_name || ''}/${c.reg_no || ''}/${c.reg_year || ''}</a>
+        <div class="court">${c.court_no_desg_name || c.establishment_name || ''}</div>
+        <div class="badge">${c.purpose_name || ''}</div>
+      </div>
+      <div class="case-party">
+        ${c.petparty_name || ''} Vs ${c.resparty_name || ''}
+      </div>
+    `;
+
+    caseListDiv.appendChild(caseDiv);
+  });
+}
+
+// Search functionality
+document.getElementById("searchBox").addEventListener("input", function() {
+  const query = this.value.toLowerCase();
+  const filtered = cases.filter(c => 
+    Object.values(c).some(val => (val + "").toLowerCase().includes(query))
+  );
+  renderCases(filtered);
+});
+</script>
+
+</body>
+</html>
