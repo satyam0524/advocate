@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>Advocate Login</title>
+    <style>
+        /* Mobile First Design - All class names are unique and long */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            min-height: -webkit-fill-available;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            padding: 16px;
+        }
+
+        /* Mobile-optimized login container */
+        .advocate_login_modal_container_2024_02_11_mobile_friendly {
+            background: white;
+            padding: 24px 20px;
+            border-radius: 24px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            width: 100%;
+            max-width: 400px;
+            transition: all 0.3s ease;
+            border-top: 5px solid #2a5298;
+            margin: 0 auto;
+        }
+
+        .advocate_login_modal_container_2024_02_11_mobile_friendly.closed_state_hidden {
+            display: none;
+        }
+
+        /* Header styles */
+        .advocate_login_header_section_top_mobile {
+            text-align: center;
+            margin-bottom: 28px;
+        }
+
+        .advocate_login_header_section_top_mobile h2 {
+            color: #1e3c72;
+            font-size: 26px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+
+        .advocate_login_header_section_top_mobile p {
+            color: #6b7280;
+            font-size: 15px;
+            line-height: 1.4;
+        }
+
+        /* Form groups - touch optimized */
+        .advocate_login_form_group_field_wrapper_mobile {
+            margin-bottom: 20px;
+        }
+
+        .advocate_login_form_group_field_wrapper_mobile label {
+            display: block;
+            margin-bottom: 8px;
+            color: #374151;
+            font-weight: 600;
+            font-size: 15px;
+            padding-left: 4px;
+        }
+
+        /* Touch-friendly select dropdown */
+        .advocate_login_branch_select_dropdown_mobile_style {
+            width: 100%;
+            padding: 16px;
+            border: 1.5px solid #e5e7eb;
+            border-radius: 14px;
+            font-size: 16px;
+            background: #f9fafb;
+            cursor: pointer;
+            appearance: none;
+            -webkit-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20' stroke='%236b7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 16px center;
+            background-size: 20px;
+            color: #111827;
+        }
+
+        .advocate_login_branch_select_dropdown_mobile_style:focus {
+            outline: none;
+            border-color: #2a5298;
+            background-color: white;
+        }
+
+        /* Mobile input with larger touch target */
+        .advocate_login_mobile_input_container_flex_mobile {
+            display: flex;
+            align-items: center;
+            border: 1.5px solid #e5e7eb;
+            border-radius: 14px;
+            background: #f9fafb;
+            transition: border-color 0.2s;
+        }
+
+        .advocate_login_mobile_input_container_flex_mobile:focus-within {
+            border-color: #2a5298;
+            background: white;
+        }
+
+        .advocate_login_mobile_prefix_country_code_mobile {
+            padding: 16px 12px 16px 16px;
+            background: transparent;
+            color: #4b5563;
+            font-weight: 600;
+            font-size: 16px;
+            border-right: 1.5px solid #e5e7eb;
+        }
+
+        .advocate_login_mobile_input_field_number_mobile {
+            flex: 1;
+            border: none;
+            padding: 16px 16px 16px 12px;
+            background: transparent;
+            font-size: 16px;
+            width: 100%;
+        }
+
+        .advocate_login_mobile_input_field_number_mobile:focus {
+            outline: none;
+        }
+
+        .advocate_login_mobile_input_field_number_mobile::placeholder {
+            color: #9ca3af;
+            font-size: 15px;
+        }
+
+        /* Large touch-friendly button */
+        .advocate_login_submit_button_primary_action_mobile {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            border: none;
+            border-radius: 16px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 12px;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 12px rgba(42,82,152,0.3);
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .advocate_login_submit_button_primary_action_mobile:active {
+            transform: scale(0.98);
+            background: linear-gradient(135deg, #1a325c 0%, #1e3c72 100%);
+            box-shadow: 0 2px 6px rgba(42,82,152,0.4);
+        }
+
+        .advocate_login_submit_button_primary_action_mobile:disabled {
+            opacity: 0.6;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Error messages */
+        .advocate_login_error_message_text_red_mobile {
+            color: #dc2626;
+            font-size: 13px;
+            margin-top: 6px;
+            min-height: 20px;
+            padding-left: 4px;
+            font-weight: 500;
+        }
+
+        /* Success message */
+        .advocate_login_success_message_green_confirmation_mobile {
+            color: #065f46;
+            font-size: 15px;
+            text-align: center;
+            margin-top: 20px;
+            padding: 14px;
+            background: #d1fae5;
+            border-radius: 14px;
+            border: 1px solid #a7f3d0;
+            display: none;
+            font-weight: 500;
+        }
+
+        .advocate_login_success_message_green_confirmation_mobile.show_success_state {
+            display: block;
+        }
+
+        /* Branch info card - clean, no mobile numbers */
+        .advocate_login_branch_information_details_card_mobile {
+            background: #eff6ff;
+            padding: 16px;
+            border-radius: 16px;
+            margin-bottom: 20px;
+            font-size: 15px;
+            border-left: 4px solid #2a5298;
+            display: none;
+        }
+
+        .advocate_login_branch_information_details_card_mobile.show_branch_info {
+            display: block;
+        }
+
+        .advocate_login_branch_information_details_card_mobile p {
+            margin: 6px 0;
+            color: #1e3c72;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .advocate_login_branch_information_details_card_mobile strong {
+            color: #374151;
+        }
+
+        /* Loading indicator - clean, no data shown */
+        .advocate_login_loading_indicator_mobile {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .advocate_login_spinner_mobile {
+            border: 4px solid #f3f4f6;
+            border-top: 4px solid #2a5298;
+            border-radius: 50%;
+            width: 48px;
+            height: 48px;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 16px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Error box - clean, no technical details */
+        .advocate_login_error_box_mobile {
+            background: #fee2e2;
+            border: 1px solid #fecaca;
+            padding: 24px 20px;
+            border-radius: 20px;
+            margin-top: 10px;
+            font-size: 15px;
+            color: #991b1b;
+            display: none;
+            text-align: center;
+        }
+
+        .advocate_login_error_box_mobile.show_error {
+            display: block;
+        }
+
+        .advocate_login_retry_button_mobile {
+            background: #dc2626;
+            color: white;
+            border: none;
+            padding: 14px 24px;
+            border-radius: 40px;
+            margin-top: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 16px;
+            width: 100%;
+            border: 1px solid white;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .advocate_login_retry_button_mobile:active {
+            background: #b91c1c;
+            transform: scale(0.98);
+        }
+
+        /* All data-related elements are hidden - NO BACKGROUND DATA SHOWN */
+        .advocate_login_hidden_debug_info,
+        .advocate_login_console_data_hidden,
+        .advocate_login_raw_json_hidden,
+        [class*="data"],
+        [class*="json"],
+        [class*="debug"] {
+            display: none !important;
+        }
+
+        /* Hide any potential data displays */
+        .advocate_login_demo_credentials_box_mobile,
+        .advocate_login_mobile_number_display,
+        .advocate_login_advocate_mobile_text {
+            display: none !important;
+        }
+
+        /* Footer - minimal */
+        .advocate_login_footer_note_mobile {
+            text-align: center;
+            margin-top: 24px;
+            font-size: 12px;
+            color: #9ca3af;
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Modal - Clean UI, No Data Visible -->
+    <div id="advocateLoginModalUniqueId_2024" class="advocate_login_modal_container_2024_02_11_mobile_friendly">
+        
+        <div class="advocate_login_header_section_top_mobile">
+            <h2>Advocate Login</h2>
+            <p>Enter your registered mobile number</p>
+        </div>
+        
+        <!-- Loading Indicator - No data shown -->
+        <div id="advocateLoadingIndicatorMobile" class="advocate_login_loading_indicator_mobile">
+            <div class="advocate_login_spinner_mobile"></div>
+            <div style="color: #4b5563; font-size: 16px;">Loading...</div>
+        </div>
+        
+        <!-- Error Box - User friendly message, no technical details -->
+        <div id="advocateErrorBoxMobile" class="advocate_login_error_box_mobile">
+            <div style="font-size: 20px; margin-bottom: 8px;">⚠️</div>
+            <strong style="font-size: 16px;">Unable to connect</strong>
+            <p style="margin-top: 10px; color: #7f1d1d;">Please check your internet connection</p>
+            <button id="advocateRetryButtonMobile" class="advocate_login_retry_button_mobile">
+                Try Again
+            </button>
+        </div>
+        
+        <!-- Branch Info Card - Only shows branch and advocate name, NO MOBILE NUMBERS -->
+        <div id="advocateBranchInfoDisplayCardMobile" class="advocate_login_branch_information_details_card_mobile">
+            <p><span>🏛️ Branch:</span> <strong id="advocateDisplayBranchNameTextMobile"></strong></p>
+            <p><span>👤 Manager:</span> <strong id="advocateDisplayManagerNameTextMobile"></strong></p>
+            <p><span>⚖️ Advocate:</span> <strong id="advocateDisplayAdvocateNameTextMobile"></strong></p>
+        </div>
+        
+        <!-- Form Fields - Hidden until data loads -->
+        <div id="advocateFormFieldsMobile" style="display: none;">
+            <div class="advocate_login_form_group_field_wrapper_mobile">
+                <label>Select Branch</label>
+                <select id="advocateBranchSelectDropdownMobile" class="advocate_login_branch_select_dropdown_mobile_style">
+                    <option value="">Choose branch</option>
+                </select>
+                <div id="advocateBranchErrorTextMobile" class="advocate_login_error_message_text_red_mobile"></div>
+            </div>
+
+            <div class="advocate_login_form_group_field_wrapper_mobile">
+                <label>Mobile Number</label>
+                <div class="advocate_login_mobile_input_container_flex_mobile">
+                    <span class="advocate_login_mobile_prefix_country_code_mobile">+91</span>
+                    <input 
+                        type="tel" 
+                        id="advocateMobileInputFieldMobile" 
+                        class="advocate_login_mobile_input_field_number_mobile"
+                        placeholder="10 digit mobile"
+                        maxlength="10"
+                        inputmode="numeric"
+                        pattern="[0-9]*"
+                        autocomplete="off"
+                    >
+                </div>
+                <div id="advocateMobileErrorTextMobile" class="advocate_login_error_message_text_red_mobile"></div>
+            </div>
+
+            <button id="advocateLoginSubmitButtonMobile" class="advocate_login_submit_button_primary_action_mobile" disabled>
+                Login
+            </button>
+        </div>
+
+        <!-- Success Message -->
+        <div id="advocateSuccessMessageTextMobile" class="advocate_login_success_message_green_confirmation_mobile">
+            ✓ Login successful!
+        </div>
+
+        <!-- Footer - No data shown -->
+        <div id="advocateFooterNoteMobile" class="advocate_login_footer_note_mobile" style="display: none;">
+            Secure Advocate Login
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            "use strict";
+            
+            // Configuration - ONLY the URL, no hardcoded data
+            const BRANCHES_URL = 'https://satyam0524.github.io/advocate/branch.json';
+            let cachedBranches = null;
+            
+            // DOM Elements - Mobile version
+            const loadingEl = document.getElementById('advocateLoadingIndicatorMobile');
+            const errorBox = document.getElementById('advocateErrorBoxMobile');
+            const formFields = document.getElementById('advocateFormFieldsMobile');
+            const submitBtn = document.getElementById('advocateLoginSubmitButtonMobile');
+            const modal = document.getElementById('advocateLoginModalUniqueId_2024');
+            const branchInfo = document.getElementById('advocateBranchInfoDisplayCardMobile');
+            const retryBtn = document.getElementById('advocateRetryButtonMobile');
+            const mobileInput = document.getElementById('advocateMobileInputFieldMobile');
+            const branchSelect = document.getElementById('advocateBranchSelectDropdownMobile');
+            const footerNote = document.getElementById('advocateFooterNoteMobile');
+            
+            // No console logs in production - silently handle everything
+            
+            // Load branches - NO DATA VISIBLE TO USERS
+            async function loadBranches() {
+                if (cachedBranches) return cachedBranches;
+                
+                // Show loading, hide everything else
+                loadingEl.style.display = 'block';
+                errorBox.classList.remove('show_error');
+                formFields.style.display = 'none';
+                submitBtn.disabled = true;
+                
+                try {
+                    const response = await fetch(`${BRANCHES_URL}?nocache=${Date.now()}`, {
+                        method: 'GET',
+                        headers: { 'Accept': 'application/json' },
+                        cache: 'no-store'
+                    });
+                    
+                    if (!response.ok) throw new Error();
+                    const data = await response.json();
+                    
+                    if (!Array.isArray(data) || data.length === 0) throw new Error();
+                    
+                    // Store data silently - NO CONSOLE LOGS
+                    cachedBranches = data;
+                    
+                    // Populate dropdown - NO DATA DISPLAYED EXCEPT BRANCH NAMES
+                    branchSelect.innerHTML = '<option value="">Choose branch</option>';
+                    data.forEach(branch => {
+                        const option = document.createElement('option');
+                        option.value = branch.name;
+                        option.textContent = branch.name; // ONLY show branch name, no advocate names
+                        branchSelect.appendChild(option);
+                    });
+                    
+                    // Show form
+                    loadingEl.style.display = 'none';
+                    formFields.style.display = 'block';
+                    submitBtn.disabled = false;
+                    footerNote.style.display = 'block';
+                    
+                } catch (error) {
+                    // Hide loading, show error
+                    loadingEl.style.display = 'none';
+                    errorBox.classList.add('show_error');
+                    cachedBranches = null;
+                }
+            }
+            
+            // Handle branch selection - NO MOBILE NUMBERS DISPLAYED
+            branchSelect.addEventListener('change', function() {
+                const branchName = this.value;
+                
+                if (branchName && cachedBranches) {
+                    const branch = cachedBranches.find(b => b.name === branchName);
+                    if (branch) {
+                        document.getElementById('advocateDisplayBranchNameTextMobile').textContent = branch.name;
+                        document.getElementById('advocateDisplayManagerNameTextMobile').textContent = branch.manager || '—';
+                        document.getElementById('advocateDisplayAdvocateNameTextMobile').textContent = branch.advocate || '—';
+                        branchInfo.classList.add('show_branch_info');
+                    }
+                } else {
+                    branchInfo.classList.remove('show_branch_info');
+                }
+                
+                document.getElementById('advocateMobileErrorTextMobile').textContent = '';
+                if (mobileInput) mobileInput.value = '';
+            });
+            
+            // Mobile number validation - ONLY digits
+            if (mobileInput) {
+                mobileInput.addEventListener('input', function(e) {
+                    this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10);
+                    document.getElementById('advocateMobileErrorTextMobile').textContent = '';
+                });
+                
+                mobileInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') handleLogin();
+                });
+            }
+            
+            // Handle login - SILENT VALIDATION, NO DATA LEAKS
+            async function handleLogin() {
+                // Clear errors
+                document.getElementById('advocateBranchErrorTextMobile').textContent = '';
+                document.getElementById('advocateMobileErrorTextMobile').textContent = '';
+                
+                const selectedBranch = branchSelect.value;
+                const enteredMobile = mobileInput.value.trim();
+                
+                // Validation
+                if (!selectedBranch) {
+                    document.getElementById('advocateBranchErrorTextMobile').textContent = 'Select branch';
+                    return;
+                }
+                
+                if (!enteredMobile) {
+                    document.getElementById('advocateMobileErrorTextMobile').textContent = 'Enter mobile number';
+                    return;
+                }
+                
+                if (enteredMobile.length !== 10) {
+                    document.getElementById('advocateMobileErrorTextMobile').textContent = '10 digits required';
+                    return;
+                }
+                
+                // Get branch and validate silently
+                const branch = cachedBranches?.find(b => b.name === selectedBranch);
+                
+                if (!branch) {
+                    document.getElementById('advocateBranchErrorTextMobile').textContent = 'Invalid branch';
+                    return;
+                }
+                
+                // Validate against advocate mobile - NO DATA DISPLAYED
+                if (branch.advocatemoible) {
+                    const cleanEntered = enteredMobile.replace(/\D/g, '');
+                    const cleanAdvocate = branch.advocatemoible.replace(/\D/g, '').slice(-10);
+                    
+                    if (cleanEntered === cleanAdvocate) {
+                        // Success - NO DATA SHOWN
+                        const successMsg = document.getElementById('advocateSuccessMessageTextMobile');
+                        successMsg.textContent = `✓ Welcome, ${branch.advocate || 'Advocate'}!`;
+                        successMsg.classList.add('show_success_state');
+                        
+                        // Clear form and close
+                        setTimeout(() => {
+                            modal.classList.add('closed_state_hidden');
+                            successMsg.classList.remove('show_success_state');
+                            branchInfo.classList.remove('show_branch_info');
+                            branchSelect.value = '';
+                            mobileInput.value = '';
+                        }, 1500);
+                        
+                    } else {
+                        document.getElementById('advocateMobileErrorTextMobile').textContent = 'Invalid mobile number';
+                    }
+                } else {
+                    document.getElementById('advocateMobileErrorTextMobile').textContent = 'Login unavailable';
+                }
+            }
+            
+            // Login button click
+            submitBtn.addEventListener('click', handleLogin);
+            
+            // Retry button
+            retryBtn.addEventListener('click', function() {
+                cachedBranches = null;
+                loadBranches();
+            });
+            
+            // Initialize - SILENTLY
+            loadBranches();
+            
+        })();
+    </script>
+</body>
+</html>
