@@ -4,23 +4,27 @@
     "manager": "P.Srinivas",
     "mobile": "9866532124",
     "advocate": "P.Satyanarayana",
-    "advocatemoible": "9177565438"
+    "advocatemoible": "9177565438",
+    "place": "Karimnagar"
   },
   {
     "name": "KMNG3",
     "manager": "Suresh Reddy",
     "mobile": "9849966546",
     "advocate": "P.Satyanaryana",
-    "advocatemoible": "9177565438"  
+    "advocatemoible": "9177565438",
+    "place": "Hyderabad"
   },
-   {
+  {
     "name": "KMNG4",
     "manager": "A.Srinivas",
     "mobile": "9160171750",
     "advocate": "G.Srinivas",
-    "advocatemoible": "9652675429"  
+    "advocatemoible": "9652675429",
+    "place": "Karimnagar"
   }
 ]
+
 
 
 
