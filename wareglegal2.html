@@ -1008,7 +1008,9 @@ alert("copied");
 // View Details click handler
 const branchesUrl = 'https://satyam0524.github.io/advocate/branch.json';
 let cachedBranches = null;
-  $('#example tbody').on('click', 'td:nth-child(6)', function() {
+ 
+
+$('#example tbody').on('click', 'td:nth-child(6)', function() {
        
   
 var data = table.cell(this).data();
@@ -1088,14 +1090,14 @@ if(customer[18]=="NO")
 
                       }else{
 
-                        bshare =`<a href="https://wa.me/+91${bmobile}?text=${encoded}" class="myLink">Send to Borrower: ${custName}</a>`;
+                        bshare =`<a href="https://wa.me/+91${bmobile}?text=${encoded}" class="myLink" id="Link1">Send to Borrower: ${custName}</a>`;
 
                       }
                       if(customer[12]=="" || customer[12]== 0 || customer[12]== "NO")
                       {
                         gshare = " Guarantor Mobile not available in LCC check </br></br>";
                       }else{
-                        gshare =`<a href="https://wa.me/+91${gmobile}?text=${encoded}" class="myLink">Send to Guarantor: ${GarName}</a>`;  
+                        gshare =`<a href="https://wa.me/+91${gmobile}?text=${encoded}" class="myLink" id="Link2">Send to Guarantor: ${GarName}</a>`;  
                       }
       
                         let loss = customer[4];
@@ -1140,8 +1142,13 @@ if(customer[18]=="NO")
 
 
 
+console.log("loss");
+console.log(loss);
+
+});
 
 
+// legal notice count start here
 
       function setCookie(name, value, minutes) {
         const d = new Date();
@@ -1155,7 +1162,9 @@ if(customer[18]=="NO")
         for (let i = 0; i < ca.length; i++) {
           let c = ca[i].trim();
           if (c.indexOf(nameEQ) === 0) {
+            
             return decodeURIComponent(c.substring(nameEQ.length, c.length));
+           
           }
         }
         return null;
@@ -1163,21 +1172,7 @@ if(customer[18]=="NO")
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      function updateDisplay(data) {
+        function updateDisplay(data) {
         const now = Date.now();
         $('#count').text(data.count);
          const $link = $('.myLink');
@@ -1187,12 +1182,14 @@ if(customer[18]=="NO")
             // window active
             if (data.count >= 20) {
               $link.addClass('disabled');
+              
             } else {
               $link.removeClass('disabled');
             }
           } else {
             // no active window or expired: always active
             $link.removeClass('disabled');
+            
           }
         }
 
@@ -1200,15 +1197,20 @@ if(customer[18]=="NO")
         if (data.expiry && now <= data.expiry) {
           
           const minutesLeft = Math.max(0, (data.expiry - now) / 60000);
+
+
+          // Extract whole minutes and remaining seconds
+                 const wholeMinutes = Math.floor(minutesLeft);
+                const seconds = Math.floor((minutesLeft - wholeMinutes) * 60);
           
           if (data.count >= 20) {
             $('#message')
-              .text(` Limit reached. Wait ${minutesLeft.toFixed(2)} minutes).`)
+              .text(` Limit reached. Wait ${wholeMinutes} Min and ${seconds} seconds.`)
               .removeClass('info').addClass('warning');
           } else {
             const remaining = 20 - data.count;
             $('#message')
-              .text(`${remaining} notices remaining . Expires in ${minutesLeft.toFixed(2)} min.`)
+              .text(`${remaining} notices remaining . Expires in ${wholeMinutes} Min and ${seconds} seconds.`)
               .removeClass('warning').addClass('info');
           }
         } else {
@@ -1231,7 +1233,7 @@ if(customer[18]=="NO")
 
 
 
-function refreshLinkState() {
+/* function refreshLinkState() {
         const data = loadCounter();
         const now = Date.now();
 
@@ -1245,33 +1247,8 @@ function refreshLinkState() {
         updateDisplay(data);
       }
 
+*/
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-function setCookie(name, value, minutes) {
-        const d = new Date();
-        d.setTime(d.getTime() + (minutes * 60 * 1000));
-        document.cookie = name + "=" + encodeURIComponent(value) + ";expires=" + d.toUTCString() + ";path=/";
-      }
 
 
 
@@ -1280,9 +1257,6 @@ function saveCounter(data) {
         // data = { count, expiry } ; expiry in ms (timestamp)
         setCookie("clickData", JSON.stringify(data), 2); // cookie lives 10 minutes
       }
-
-
-
 
 
 
@@ -1303,13 +1277,6 @@ function loadCounter() {
         // default: no clicks, expiry 0 means no window started yet
         return { count: 0, expiry: 0 };
       }
-
-
-
-
-
-
-
 
 
  function handleLinkClick(event) {
@@ -1346,16 +1313,17 @@ function loadCounter() {
 
         // Within limit, increment
         data.count++;
+        console.log("datacount at handleclick function");
+        console.log(data.count)
         saveCounter(data);
         updateDisplay(data);
         // allow navigation
       }
 
 
-$(document).on('click', '.myLink', handleLinkClick);
-
-
-refreshLinkState();
+//$(document).on('click', '.myLink', handleLinkClick);
+$(document).on('click', '#Link1', handleLinkClick);
+$(document).on('click', '#Link2', handleLinkClick);
 
 
 setInterval(() => {
@@ -1366,16 +1334,19 @@ setInterval(() => {
           data.count = 0;
           data.expiry = 0;
           saveCounter(data);
+          
         }
         updateDisplay(data);
+        console.log("setinteral function");
+        console.log(data.count);
+        console.log(data);  
       }, 1000);
 
 
 
-console.log("loss");
-console.log(loss);
 
-});
+
+
 
   // Export to Excel button handler
   $("body").on('click', '#btnExport', function() {
