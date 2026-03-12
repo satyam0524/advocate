@@ -1415,8 +1415,8 @@ const phoneInput = document.getElementById('phoneInput');
             // Create the WhatsApp URL
             // const whatsappUrl = `https://wa.me/${formattedNumber}?text=${message}`;
             
-const whatsappUrl = `intent://send?phone=${formattedNumber}&text=${message}#Intent;scheme=https;package=com.whatsapp.w4b;S.browser_fallback_url=https://wa.me/${formattedNumber}?text=${message};end;`;
-
+// const whatsappUrl = `intent://send?phone=${formattedNumber}&text=${message}#Intent;scheme=https;package=com.whatsapp.w4b;S.browser_fallback_url=https://wa.me/${formattedNumber}?text=${message};end;`;
+const whatsappUrl = `intent://send?phone=${formattedNumber}&text=${message}#Intent;scheme=https;package=com.whatsapp.w4b;end;`;
             // Open the link in a new tab
             window.open(whatsappUrl, '_blank');
         }
@@ -1889,4 +1889,5 @@ var dataSet = [["1","HSNBD","GOTTE RANJITH KUMAR","ED-S&S","-126657","View","29-
 }
 </style>
 </body>
+
 </html>
